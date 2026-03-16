@@ -18,7 +18,7 @@ def main():
         print(' (C) Check overall stats')
         print('\n (X) Save and exit')
         choice = input('Choice: ').upper()
-    
+
     #Takes user input and opens sub-routines
         if choice == 'A':
             number_features()
@@ -48,7 +48,7 @@ def number_features():
         print(" Even")
     else:
         print(" Odd")
-    
+
 
     #List all factors of the number
     print(" Factors are", end="")
@@ -76,6 +76,7 @@ def plotter():
     clear_screen()
     print("Plotter routine")
     input()
+
 def stats():
     """Show statistics about numbers used in app"""
     clear_screen()
