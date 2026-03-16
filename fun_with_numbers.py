@@ -70,6 +70,7 @@ def draw_graph():
     print("                                                       x axis")
     print("      1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38")
     print("   --------------------------------------------------------------------------------------------------------------------")
+    print("   --------------------------------------------------------------------------------------------------------------------")
 
 def plotter():
     """Plot x and y cords on a table"""
@@ -80,6 +81,10 @@ def plotter():
 def stats():
     """Show statistics about numbers used in app"""
     clear_screen()
+    #Creates a blank table with specified rows and columns#
+    num_columns = 38
+    num_rows = 12
+    table = [[" " for column in range(num_columns)] for row in range(num_rows)]
     print("Statistics routine")
     input()
 
