@@ -60,7 +60,7 @@ def number_features():
 
     #Check if number is a prime
     if factor_count == 2:
-        print("\an Is a prime number")
+        print("\n Is a prime number")
     else:
         print("\n Is not a prime number")
     input()
