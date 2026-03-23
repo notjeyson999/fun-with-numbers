@@ -15,6 +15,7 @@ PLOT_COUNT = 0
 def main():
     '''The main menu'''
     #Sets the exit condition to false
+    load_stats()
     exit_flag = False
 
     while not exit_flag:
@@ -35,6 +36,7 @@ def main():
         elif choice == "C":
             stats()
         elif choice == "X":
+            save_stats()
             exit_flag = True
 
 def number_features():
@@ -58,7 +60,7 @@ def number_features():
     else:
         print(" Odd")
 
-    #Lists all the factors of te number
+    #Lists all the factors of the number
     print(" Factors are", end="")
     factor_count = 0
     for i in range(1, number + 1):
@@ -124,7 +126,6 @@ def plotter():
                 pass
         except ValueError:
             print("Invalid input. Please use integers.")
-        input("press enter to go back to the main menu.")
 
 def stats():
     """Show statistics about numbers used in app"""
@@ -132,7 +133,7 @@ def stats():
     print("Here are your statistics of overall use:")
     print(f" Numbers entered:  {NUMBER_COUNT}")
     print(f" Total of numbers:  {NUMBER_TOTAL}")
-    print(f" Average of Numbers:  {NUMBER_TOTAL} / {NUMBER_COUNT}")
+    print(f" Average of Numbers:  {NUMBER_TOTAL / NUMBER_COUNT}")
     print(f" Smallest number entered:  {SMALLEST_NUMBER}")
     print(f" Largest Number entered:  {PLOT_COUNT}")
     input()
@@ -143,7 +144,21 @@ def clear_screen():
 
 def save_stats():
     """Saves statistics from current session to file"""
-    with open('stats/stats.txt', 'w', encoding='utf8') as f:
-        
+    with open('stats.txt', 'w', encoding='utf8') as f:
+        f.write(f"{NUMBER_COUNT}\n")
+        f.write(f"{NUMBER_TOTAL}\n")
+        f.write(f"{SMALLEST_NUMBER}\n")
+        f.write(f"{LARGEST_NUMBER}\n")
+        f.write(f"{PLOT_COUNT}\n")
+
+def load_stats():
+    """Loads statistics from previous session"""
+    with open('stats.txt', 'r') as f:
+        global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER, PLOT_COUNT
+        NUMBER_COUNT = int(f.readline())
+        NUMBER_TOTAL = int(f.readline())
+        SMALLEST_NUMBER = int(f.readline())
+        LARGEST_NUMBER = int(f.readline())
+        PLOT_COUNT = int(f.readline())
 
 main()
