@@ -1,2 +1,5 @@
-LARGEST_NUMBER displayed is wrong
-SMALLEST_NUMBER displayed is always zero despite not inputting zero
+✅FIXED✅LARGEST_NUMBER displayed is wrong -> fix code ✅FIXED✅
+✅FIXED✅SMALLEST_NUMBER displayed is always zero despite not inputting zero -> fix code ✅FIXED✅
+Number features crashes when a float/string is entered -> add "please enter a whole number"
+Number plotter graph disappears if x-axis coordinate ≥ 13
+Number plotter crashes when coordinate inputted exceeds graph limit (x-axis = 12, y-axis = 38)

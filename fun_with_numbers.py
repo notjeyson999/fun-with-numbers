@@ -47,7 +47,7 @@ def number_features():
     print(f"The features of {number} are...")
 
     #Check if the number is odd or even
-    if number < 0:
+    if number > 0:
         print(" Positive")
     elif number < 0:
         print(" Negative")
