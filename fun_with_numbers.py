@@ -135,7 +135,7 @@ def stats():
     print(f" Total of numbers:  {NUMBER_TOTAL}")
     print(f" Average of Numbers:  {NUMBER_TOTAL / NUMBER_COUNT}")
     print(f" Smallest number entered:  {SMALLEST_NUMBER}")
-    print(f" Largest Number entered:  {PLOT_COUNT}")
+    print(f" Largest Number entered:  {LARGEST_NUMBER}")
     input()
 
 def clear_screen():
@@ -153,12 +153,19 @@ def save_stats():
 
 def load_stats():
     """Loads statistics from previous session"""
-    with open('stats.txt', 'r') as f:
-        global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER, PLOT_COUNT
-        NUMBER_COUNT = int(f.readline())
-        NUMBER_TOTAL = int(f.readline())
-        SMALLEST_NUMBER = int(f.readline())
-        LARGEST_NUMBER = int(f.readline())
-        PLOT_COUNT = int(f.readline())
+    try:
+        with open('stats.txt', 'r') as f:
+            global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER, PLOT_COUNT
+            NUMBER_COUNT = int(f.readline())
+            NUMBER_TOTAL = int(f.readline())
+            SMALLEST_NUMBER = int(f.readline())
+            LARGEST_NUMBER = int(f.readline())
+            PLOT_COUNT = int(f.readline())
+    except FileNotFoundError:
+        NUMBER_COUNT = 0
+        NUMBER_TOTAL = 0
+        SMALLEST_NUMBER = 0
+        LARGEST_NUMBER = 0
+        PLOT_COUNT = 0
 
 main()

@@ -1,0 +1,2 @@
+LARGEST_NUMBER displayed is wrong
+SMALLEST_NUMBER displayed is always zero despite not inputting zero
