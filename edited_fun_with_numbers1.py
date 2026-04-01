@@ -40,56 +40,59 @@ def main():
             exit_flag = True
 
 def number_features():
-    """Displays features of a number"""
-    clear_screen()
-    global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER
-    number = int(input("Please enter a whole number that can be checked over: "))
-    print(f"The features of {number} are...")
+    while True:
+        #"""Displays features of a number"""
+        clear_screen()
+        global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER
+        number = int(input("Please enter a whole number that can be checked over: "))
+        print(f"The features of {number} are...")
 
-    #Check if the number is odd or even
-    if number > 0:
-        print(" Positive")
-    elif number < 0:
-        print(" Negative")
-    else:
-        print(" Zero")
+        #Check if the number is odd or even
+        if number == 28:
+            print("")
+        elif number > 0:
+            print(" Positive")
+        elif number < 0:
+            print(" Negative")
+        else:
+            print(" Zero")
 
-    #Check if the number is odd or even
-    if number % 2 == 0:
-        print(" Even")
-    else:
-        print(" Odd")
+        #Check if the number is odd or even
+        if number % 2 == 0:
+            print(" Even")
+        else:
+            print(" Odd")
 
-    #Lists all the factors of the number
-    print(" Factors are", end="")
-    factor_count = 0
-    for i in range(1, number + 1):
-        if number % i == 0:
-            print(" " + str(i), end="")
-            factor_count += 1
+        #Lists all the factors of the number
+        print(" Factors are", end="")
+        factor_count = 0
+        for i in range(1, number + 1):
+            if number % i == 0:
+                print(" " + str(i), end="")
+                factor_count += 1
 
-    #Check if number is a prime
-    if factor_count == 2:
-        print("\n Is a prime number")
-    else:
-        print("\n Is not a prime number")
-    input()
+        #Check if number is a prime
+        if factor_count == 2:
+            print("\n Is a prime number")
+        else:
+            print("\n Is not a prime number")
 
-    #Update global variables
-    if NUMBER_COUNT == 0:
-        SMALLEST_NUMBER == number
-        LARGEST_NUMBER == number
-    else:
-        SMALLEST_NUMBER = min(number, SMALLEST_NUMBER)
-        LARGEST_NUMBER = max(number, LARGEST_NUMBER)
+        #Update global variables
+        if NUMBER_COUNT == 0:
+            SMALLEST_NUMBER == number
+            LARGEST_NUMBER == number
+        else:
+            SMALLEST_NUMBER = min(number, SMALLEST_NUMBER)
+            LARGEST_NUMBER = max(number, LARGEST_NUMBER)
 
-    NUMBER_COUNT += 1
-    NUMBER_TOTAL += number
+        NUMBER_COUNT += 1
+        NUMBER_TOTAL += number
 
-    #Asks user if they want to check another number
-    again = input("Do you want to check another number (y/n)? ").lower()
-    if again != "y":
-        break
+        #Asks user if they want to check another number
+        again = input("Do you want to check another number (y/n)?: ").lower()
+        if again != "y":
+            break
+
 
 def draw_graph(table):
     """Draws the graph for the plotter routine"""
