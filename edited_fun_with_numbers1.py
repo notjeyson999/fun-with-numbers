@@ -3,6 +3,10 @@
 
 #Imports required libraries
 import os
+#Imports time function
+import time
+#Imports random for higher or lower feature
+import random
 
 #State global variables
 NUMBER_COUNT = 0
@@ -25,6 +29,7 @@ def main():
         print(" (A) Check number features")
         print(" (B) Plot numbers")
         print(" (C) Check overall stats")
+        print(" (D) Higher or Lower")
         print("\n (X) Save and exit")
         choice = input("Choice: ").upper()
 
@@ -38,19 +43,23 @@ def main():
         elif choice == "X":
             save_stats()
             exit_flag = True
+        elif choice == "D":
+            higher_lower()
 
 def number_features():
     while True:
         #"""Displays features of a number"""
         clear_screen()
         global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER
-        number = int(input("Please enter a whole number that can be checked over: "))
-        print(f"The features of {number} are...")
+        try:
+            number = int(input("Please enter a whole number that can be checked over: "))
+            if number == int:
+                print(f"The features of {number} are...")
+        except ValueError:
+            print("...")
 
         #Check if the number is odd or even
-        if number == 28:
-            print("")
-        elif number > 0:
+        if number > 0:
             print(" Positive")
         elif number < 0:
             print(" Negative")
@@ -92,6 +101,7 @@ def number_features():
         again = input("Do you want to check another number (y/n)?: ").lower()
         if again != "y":
             break
+    input()
 
 
 def draw_graph(table):
@@ -134,6 +144,46 @@ def plotter():
                 pass
         except ValueError:
             print("Invalid input. Please use integers.")
+
+def higher_lower():
+    """Higher-or-Lower game"""
+    clear_screen()
+    print("Hello and welcome to Higher or Lower!!!")
+    time.sleep(0.25)
+    print("A game where you have to guess the magic number between 1-10")
+    time.sleep(0.25)
+    print("But be wary, for if you shall exceed 5 attempts, you will be out!")
+    time.sleep(0.25)
+    print("Good luck player!!!")
+    time.sleep(0.25)
+    
+    num = random.randint(1, 10)
+    try:
+        for _ in range(5):
+            guess = int(input("What do you think it is?: "))
+            if guess == num:
+                    print("BAZINGA! You are correct!")
+                    print("Press enter to return to main menu")
+                    break
+            elif guess > 10:
+                    print("Please enter a number between 1-10!")
+                    time.sleep(0.5)
+            elif guess < 0:
+                    print("Please enter a number between 1-10!")
+                    time.sleep(0.5)
+            elif guess > num:
+                    print("WRONG! Lower")
+            elif guess < num:
+                    print("WRONG! Higher")
+        else:
+            print("Oh No! You ran out of attempts.")
+            print(f"The number we were looking for was {num}")
+            print("Press enter to return to the main menu")
+    except ValueError:
+        print("Invalid input! Please input an integer")
+        time.sleep(0.5)
+        print("Press Enter to return to menu")
+    input()
 
 def stats():
     """Show statistics about numbers used in app"""
