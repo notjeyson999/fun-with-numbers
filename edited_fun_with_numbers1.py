@@ -14,6 +14,9 @@ NUMBER_TOTAL = 0
 SMALLEST_NUMBER = 0
 LARGEST_NUMBER = 0
 PLOT_COUNT = 0
+TOTAL_GUESSES = 0
+TOTAL_INVALID_GUESSES = 0
+CORRECT_GUESSES = 0
 
 
 def main():
@@ -28,8 +31,8 @@ def main():
         print("Choose from the menu below:")
         print(" (A) Check number features")
         print(" (B) Plot numbers")
-        print(" (C) Check overall stats")
-        print(" (D) Higher or Lower")
+        print(" (C) Higher or Lower")
+        print(" (D) Check overall stats")
         print("\n (X) Save and exit")
         choice = input("Choice: ").upper()
 
@@ -39,14 +42,17 @@ def main():
         elif choice == "B":
             plotter()
         elif choice == "C":
+            higher_lower()
+        elif choice == "D":
             stats()
         elif choice == "X":
             save_stats()
+            print("Come again soon :D")
+            time.sleep(0.25)
             exit_flag = True
-        elif choice == "D":
-            higher_lower()
 
 def number_features():
+    """Displays features of the number entered"""
     while True:
         #"""Displays features of a number"""
         clear_screen()
@@ -100,6 +106,7 @@ def number_features():
         #Asks user if they want to check another number
         again = input("Do you want to check another number (y/n)?: ").lower()
         if again != "y":
+            print("Press Enter to return to main menu")
             break
     input()
 
@@ -136,7 +143,7 @@ def plotter():
                     if 0 < x_axis <= num_rows:
                         draw_graph(table)
                         another_cord = input("Do you wish to add another coordinate (y/n)? ").lower()
-                        if another_cord == 'n':
+                        if another_cord != 'y':
                             break
                 else:
                     pass
@@ -148,39 +155,52 @@ def plotter():
 def higher_lower():
     """Higher-or-Lower game"""
     clear_screen()
+    global TOTAL_GUESSES, CORRECT_GUESSES, TOTAL_INVALID_GUESSES
     print("Hello and welcome to Higher or Lower!!!")
-    time.sleep(0.25)
+    time.sleep(0.5)
     print("A game where you have to guess the magic number between 1-10")
-    time.sleep(0.25)
+    time.sleep(0.5)
     print("But be wary, for if you shall exceed 5 attempts, you will be out!")
-    time.sleep(0.25)
+    time.sleep(0.5)
     print("Good luck player!!!")
-    time.sleep(0.25)
-    
+    time.sleep(0.5)
+
     num = random.randint(1, 10)
     try:
-        for _ in range(5):
+        count = 0
+        while count < 5:
             guess = int(input("What do you think it is?: "))
             if guess == num:
-                    print("BAZINGA! You are correct!")
-                    print("Press enter to return to main menu")
-                    break
+                print("BAZINGA! You are correct!")
+                print("Press enter to return to main menu")
+                CORRECT_GUESSES += 1
+                TOTAL_GUESSES += 1
+                break
             elif guess > 10:
-                    print("Please enter a number between 1-10!")
-                    time.sleep(0.5)
+                print("Please enter a number between 1-10!")
+                time.sleep(0.5)
+                TOTAL_INVALID_GUESSES += 1
             elif guess < 0:
-                    print("Please enter a number between 1-10!")
-                    time.sleep(0.5)
+                print("Please enter a number between 1-10!")
+                time.sleep(0.5)
+                TOTAL_INVALID_GUESSES += 1
             elif guess > num:
-                    print("WRONG! Lower")
+                print("WRONG! Lower")
+                TOTAL_GUESSES += 1
+                count += 1
             elif guess < num:
-                    print("WRONG! Higher")
+                print("WRONG! Higher")
+                TOTAL_GUESSES += 1
+                count += 1
+            elif guess == ...:
+                print("...")
         else:
             print("Oh No! You ran out of attempts.")
             print(f"The number we were looking for was {num}")
             print("Press enter to return to the main menu")
     except ValueError:
         print("Invalid input! Please input an integer")
+        TOTAL_INVALID_GUESSES += 1
         time.sleep(0.5)
         print("Press Enter to return to menu")
     input()
@@ -194,6 +214,11 @@ def stats():
     print(f" Average of Numbers:  {NUMBER_TOTAL / NUMBER_COUNT}")
     print(f" Smallest number entered:  {SMALLEST_NUMBER}")
     print(f" Largest Number entered:  {LARGEST_NUMBER}")
+    print(f" Total Guesses: {TOTAL_GUESSES}")
+    print(f" Total Invalid Guesses: {TOTAL_INVALID_GUESSES}")
+    print(f" Total Correct Guesses: {CORRECT_GUESSES}")
+    print(f" Higher-Lower Win Rate: {CORRECT_GUESSES / TOTAL_GUESSES}%")
+    print("Press enter to return to main menu")
     input()
 
 def clear_screen():
@@ -208,22 +233,32 @@ def save_stats():
         f.write(f"{SMALLEST_NUMBER}\n")
         f.write(f"{LARGEST_NUMBER}\n")
         f.write(f"{PLOT_COUNT}\n")
+        f.write(f"{TOTAL_GUESSES}\n")
+        f.write(f"{TOTAL_INVALID_GUESSES}\n")
+        f.write(f"{CORRECT_GUESSES}\n")
 
 def load_stats():
     """Loads statistics from previous session"""
     try:
         with open('stats.txt', 'r') as f:
-            global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER, PLOT_COUNT
+            global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER, PLOT_COUNT, TOTAL_GUESSES, TOTAL_INVALID_GUESSES, CORRECT_GUESSES
             NUMBER_COUNT = int(f.readline())
             NUMBER_TOTAL = int(f.readline())
             SMALLEST_NUMBER = int(f.readline())
             LARGEST_NUMBER = int(f.readline())
             PLOT_COUNT = int(f.readline())
+            TOTAL_GUESSES = int(f.readline())
+            TOTAL_INVALID_GUESSES = int(f.readline())
+            CORRECT_GUESSES = int(f.readline())
     except FileNotFoundError:
         NUMBER_COUNT = 0
         NUMBER_TOTAL = 0
         SMALLEST_NUMBER = 0
         LARGEST_NUMBER = 0
         PLOT_COUNT = 0
+        TOTAL_GUESSES = 0
+        TOTAL_INVALID_GUESSES = 0
+        CORRECT_GUESSES = 0
 
 main()
+#End of Code
