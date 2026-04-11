@@ -8,6 +8,12 @@ import time
 #Imports random for higher or lower feature
 import random
 
+#States Colours for UI
+RED     = '\033[31m'
+GREEN   = '\033[32m'
+YELLOW  = '\033[33m'
+CYAN    = '\033[36m'
+
 #State global variables
 NUMBER_COUNT = 0
 NUMBER_TOTAL = 0
@@ -176,6 +182,11 @@ def higher_lower():
                 CORRECT_GUESSES += 1
                 TOTAL_GUESSES += 1
                 break
+            elif guess == 67:
+                print("89")
+                time.sleep(0.67)
+                TOTAL_GUESSES += 1
+                count += 1
             elif guess > 10:
                 print("Please enter a number between 1-10!")
                 time.sleep(0.5)
@@ -192,8 +203,6 @@ def higher_lower():
                 print("WRONG! Higher")
                 TOTAL_GUESSES += 1
                 count += 1
-            elif guess == ...:
-                print("...")
         else:
             print("Oh No! You ran out of attempts.")
             print(f"The number we were looking for was {num}")
@@ -217,7 +226,7 @@ def stats():
     print(f" Total Guesses: {TOTAL_GUESSES}")
     print(f" Total Invalid Guesses: {TOTAL_INVALID_GUESSES}")
     print(f" Total Correct Guesses: {CORRECT_GUESSES}")
-    print(f" Higher-Lower Win Rate: {CORRECT_GUESSES / TOTAL_GUESSES}%")
+    print(f" Higher-Lower Win Rate: {CORRECT_GUESSES / TOTAL_GUESSES:.2f}%")
     print("Press enter to return to main menu")
     input()
 
@@ -261,4 +270,3 @@ def load_stats():
         CORRECT_GUESSES = 0
 
 main()
-#End of Code
