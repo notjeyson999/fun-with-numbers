@@ -24,7 +24,6 @@ TOTAL_GUESSES = 0
 TOTAL_INVALID_GUESSES = 0
 CORRECT_GUESSES = 0
 
-
 def main():
     '''The main menu'''
     #Sets the exit condition to false
@@ -68,7 +67,9 @@ def number_features():
             if number == int:
                 print(f"The features of {number} are...")
         except ValueError:
-            print("...")
+            print("\nPlease input an integer next time")
+            print("Press enter to return to main menu")
+            break
 
         #Check if the number is odd or even
         if number > 0:
@@ -151,10 +152,10 @@ def plotter():
                         another_cord = input("Do you wish to add another coordinate (y/n)? ").lower()
                         if another_cord != 'y':
                             break
-                else:
-                    pass
-            else:
-                pass
+                elif y_axis > 12:
+                    break
+            elif x_axis > 38:
+                break
         except ValueError:
             print("Invalid input. Please use integers.")
 
@@ -173,17 +174,18 @@ def higher_lower():
 
     num = random.randint(1, 10)
     try:
-        count = 0
-        while count < 5:
+        count = 1
+        while count < 6:
             guess = int(input("What do you think it is?: "))
             if guess == num:
                 print("BAZINGA! You are correct!")
+                print(f"You guessed in {count} guesses")
                 print("Press enter to return to main menu")
                 CORRECT_GUESSES += 1
                 TOTAL_GUESSES += 1
                 break
             elif guess == 67:
-                print("89")
+                print(f"89. {count}/5")
                 time.sleep(0.67)
                 TOTAL_GUESSES += 1
                 count += 1
@@ -196,11 +198,11 @@ def higher_lower():
                 time.sleep(0.5)
                 TOTAL_INVALID_GUESSES += 1
             elif guess > num:
-                print("WRONG! Lower")
+                print(f"WRONG! Lower. {count}/5")
                 TOTAL_GUESSES += 1
                 count += 1
             elif guess < num:
-                print("WRONG! Higher")
+                print(f"WRONG! Higher. {count}/5")
                 TOTAL_GUESSES += 1
                 count += 1
         else:
