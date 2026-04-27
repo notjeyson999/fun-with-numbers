@@ -67,7 +67,7 @@ def number_features():
             if number == int:
                 print(f"The features of {number} are...")
         except ValueError:
-            print("\nPlease input an integer next time")
+            print("Please input an integer")
             print("Press enter to return to main menu")
             break
 
@@ -98,6 +98,11 @@ def number_features():
             print("\n Is a prime number")
         else:
             print("\n Is not a prime number")
+        
+        #Displays number as Binary, Hexadecimal and Octal
+        print(f"  Binary: {bin(number)}")
+        print(f"  Hexadecimal: {hex(number)}")
+        print(f"  Octal: {oct(number)}")
 
         #Update global variables
         if NUMBER_COUNT == 0:
@@ -179,7 +184,7 @@ def higher_lower():
             guess = int(input("What do you think it is?: "))
             if guess == num:
                 print("BAZINGA! You are correct!")
-                print(f"You guessed in {count} guesses")
+                print(f"You guessed it in {count} guesses")
                 print("Press enter to return to main menu")
                 CORRECT_GUESSES += 1
                 TOTAL_GUESSES += 1
@@ -193,7 +198,7 @@ def higher_lower():
                 print("Please enter a number between 1-10!")
                 time.sleep(0.5)
                 TOTAL_INVALID_GUESSES += 1
-            elif guess < 0:
+            elif guess < 1:
                 print("Please enter a number between 1-10!")
                 time.sleep(0.5)
                 TOTAL_INVALID_GUESSES += 1
