@@ -9,6 +9,7 @@ import time
 import random
 
 #States Colours for UI
+RESET   = '\033[0m'
 RED     = '\033[31m'
 GREEN   = '\033[32m'
 YELLOW  = '\033[33m'
@@ -32,14 +33,14 @@ def main():
 
     while not exit_flag:
         clear_screen()
-        print("Welcome to the Fun with Numbers!")
-        print("Choose from the menu below:")
-        print(" (A) Check number features")
-        print(" (B) Plot numbers")
-        print(" (C) Higher or Lower")
-        print(" (D) Check overall stats")
-        print("\n (X) Save and exit")
-        choice = input("Choice: ").upper()
+        print(f"{CYAN}Welcome to the Fun with Numbers!")
+        print(f"Choose from the menu below:{RESET}")
+        print(f" {GREEN}(A){RESET} {YELLOW}Check number features")
+        print(f" {GREEN}(B){RESET} {YELLOW}Plot numbers")
+        print(f" {GREEN}(C){RESET} {YELLOW}Higher or Lower")
+        print(f" {GREEN}(D){RESET} {YELLOW}Check overall stats")
+        print(f"\n {GREEN}(X){RESET} {YELLOW}Save and exit")
+        choice = input(f"{CYAN}Choice: {RESET}").upper()
 
     #Takes user input and opens sub routines
         if choice == "A":
@@ -100,9 +101,9 @@ def number_features():
             print("\n Is not a prime number")
         
         #Displays number as Binary, Hexadecimal and Octal
-        print(f"  Binary: {bin(number)}")
-        print(f"  Hexadecimal: {hex(number)}")
-        print(f"  Octal: {oct(number)}")
+        print(f" Binary: {bin(number)}")
+        print(f" Hexadecimal: {hex(number)}")
+        print(f" Octal: {oct(number)}")
 
         #Update global variables
         if NUMBER_COUNT == 0:
