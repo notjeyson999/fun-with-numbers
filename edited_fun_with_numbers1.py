@@ -10,10 +10,12 @@ import random
 
 #States Colours for UI
 RESET   = '\033[0m'  #Sets to default#
-RED     = '\033[31m' #Special Characters#
+RED     = '\033[31m' #Special Characters/Numbers#
 GREEN   = '\033[32m' #Choices#
 YELLOW  = '\033[33m' #Text#
 CYAN    = '\033[36m' #Input#
+BLUE    = '\033[94m' ##
+MAGENTA = '\033[35m' ##
 
 #State global variables
 NUMBER_COUNT = 0
@@ -33,8 +35,8 @@ def main():
 
     while not exit_flag:
         clear_screen()
-        print(f"{CYAN}Welcome to the Fun with Numbers!")
-        print(f"Choose from the menu below:{RESET}")
+        print(f"{GREEN}Welcome to Fun with Numbers!")
+        print(f"{GREEN}Choose from the menu below:{RESET}")
         print(f" {GREEN}(A){RESET} {YELLOW}Check number features")
         print(f" {GREEN}(B){RESET} {YELLOW}Plot numbers")
         print(f" {GREEN}(C){RESET} {YELLOW}Higher or Lower")
@@ -64,7 +66,7 @@ def number_features():
         clear_screen()
         global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER
         try:
-            number = int(input(f"{GREEN}Please enter a whole number that can be checked over: {CYAN}"))
+            number = int(input(f"{YELLOW}Please enter a whole number that can be checked over: {CYAN}"))
             if number == int:
                 print(f"{YELLOW}The features of {number} are...")
         except ValueError:
@@ -101,9 +103,15 @@ def number_features():
             print(F"\n {YELLOW}Is not a prime number")
         
         #Displays number as Binary, Hexadecimal and Octal
-        print(f" {YELLOW}Binary: {RED}{bin(number)}{YELLOW}")
-        print(f" {YELLOW}Hexadecimal: {RED}{hex(number)}{YELLOW}")
-        print(f" {YELLOW}Octal: {RED}{oct(number)}{YELLOW}")
+        binary = f"{bin(number)}"
+        binary1 = binary[2:]
+        hexadecimal = f"{hex(number)}"
+        hexadecimal1 = hexadecimal[2:]
+        octal = f"{oct(number)}"
+        octal1 = octal[2:]
+        print(f" {YELLOW}Binary: {RED}{binary1}")
+        print(f" {YELLOW}Hexadecimal: {RED}{hexadecimal1}")
+        print(f" {YELLOW}Octal: {RED}{octal1}")
 
         #Update global variables
         if NUMBER_COUNT == 0:
@@ -143,7 +151,7 @@ def plotter():
     num_rows = 12
     table = [[" " for column in range(num_columns)] for row in range(num_rows)]
     draw_graph(table)
-    print(F"{GREEN}Enter a coordinate below to be added to the plot")
+    print(F"{BLUE}Enter a coordinate below to be added to the plot")
     while True:
         try:
             x_axis = int(input(F"{GREEN}x axis: {CYAN}"))
@@ -184,7 +192,7 @@ def higher_lower():
         while count < 6:
             guess = int(input(F"{GREEN}What do you think it is?: {CYAN}"))
             if guess == num:
-                print(F"{YELLOW}BAZINGA! You are correct!")
+                print(F"{GREEN}BAZINGA!{YELLOW} You are correct!")
                 print(f"You guessed it in {RED}{count}{YELLOW} guesses")
                 print(F"Press enter to return to main menu{RESET}")
                 CORRECT_GUESSES += 1
@@ -196,19 +204,19 @@ def higher_lower():
                 TOTAL_GUESSES += 1
                 count += 1
             elif guess > 10:
-                print(F"{YELLOW}Please enter a number between 1-10!")
+                print(F"{YELLOW}Please enter a number between {RED}1-10!")
                 time.sleep(0.5)
                 TOTAL_INVALID_GUESSES += 1
             elif guess < 1:
-                print(F"{YELLOW}Please enter a number between 1-10!")
+                print(F"{YELLOW}Please enter a number between {RED}1-10!")
                 time.sleep(0.5)
                 TOTAL_INVALID_GUESSES += 1
             elif guess > num:
-                print(f"{YELLOW}WRONG! Lower. {RED}{count}/5{RESET}")
+                print(f"{RED}WRONG!{YELLOW} Lower. {RED}{count}/5{RESET}")
                 TOTAL_GUESSES += 1
                 count += 1
             elif guess < num:
-                print(f"{YELLOW}WRONG! Higher. {RED}{count}/5{RESET}")
+                print(f"{RED}WRONG!{YELLOW} Higher. {RED}{count}/5{RESET}")
                 TOTAL_GUESSES += 1
                 count += 1
         else:
@@ -225,17 +233,17 @@ def higher_lower():
 def stats():
     """Show statistics about numbers used in app"""
     clear_screen()
-    print("Here are your statistics of overall use:")
-    print(f" Numbers entered:  {NUMBER_COUNT}")
-    print(f" Total of numbers:  {NUMBER_TOTAL}")
-    print(f" Average of Numbers:  {NUMBER_TOTAL / NUMBER_COUNT}")
-    print(f" Smallest number entered:  {SMALLEST_NUMBER}")
-    print(f" Largest Number entered:  {LARGEST_NUMBER}")
-    print(f" Total Guesses: {TOTAL_GUESSES}")
-    print(f" Total Invalid Guesses: {TOTAL_INVALID_GUESSES}")
-    print(f" Total Correct Guesses: {CORRECT_GUESSES}")
-    print(f" Higher-Lower Win Rate: {CORRECT_GUESSES / TOTAL_GUESSES:.2f}%")
-    print("Press enter to return to main menu")
+    print(f"{YELLOW}Here are your statistics of overall use:")
+    print(f" {YELLOW}Numbers entered:  {RED}{NUMBER_COUNT}")
+    print(f" {YELLOW}Total of numbers:  {RED}{NUMBER_TOTAL}")
+    print(f" {YELLOW}Average of Numbers:  {RED}{NUMBER_TOTAL / NUMBER_COUNT}")
+    print(f" {YELLOW}Smallest number entered:  {RED}{SMALLEST_NUMBER}")
+    print(f" {YELLOW}Largest Number entered:  {RED}{LARGEST_NUMBER}")
+    print(f" {YELLOW}Total Guesses: {RED}{TOTAL_GUESSES}")
+    print(f" {YELLOW}Total Invalid Guesses: {RED}{TOTAL_INVALID_GUESSES}")
+    print(f" {YELLOW}Total Correct Guesses: {RED}{CORRECT_GUESSES}")
+    print(f" {YELLOW}Higher-Lower Win Rate: {RED}{CORRECT_GUESSES / TOTAL_GUESSES:.2f}%")
+    print(F"{YELLOW}Press enter to return to main menu")
     input()
 
 def clear_screen():
