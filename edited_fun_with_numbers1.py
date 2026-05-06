@@ -35,13 +35,16 @@ def main():
 
     while not exit_flag:
         clear_screen()
+        print(f"{GREEN}==============================")
         print(f"{GREEN}Welcome to Fun with Numbers!")
         print(f"{GREEN}Choose from the menu below:{RESET}")
         print(f" {GREEN}(A){RESET} {YELLOW}Check number features")
         print(f" {GREEN}(B){RESET} {YELLOW}Plot numbers")
         print(f" {GREEN}(C){RESET} {YELLOW}Higher or Lower")
-        print(f" {GREEN}(D){RESET} {YELLOW}Check overall stats")
+        print(f" {GREEN}(D){RESET} {YELLOW}Number Wordle")
+        print(f" {GREEN}(E){RESET} {YELLOW}Check overall stats")
         print(f"\n {GREEN}(X){RESET} {YELLOW}Save and exit")
+        print(f"{GREEN}==============================")
         choice = input(f"{GREEN}Choice: {CYAN}").upper()
 
     #Takes user input and opens sub routines
@@ -52,10 +55,12 @@ def main():
         elif choice == "C":
             higher_lower()
         elif choice == "D":
+            number_wordle()
+        elif choice == "E":
             stats()
         elif choice == "X":
             save_stats()
-            print(f"{YELLOW}Come again soon :D")
+            print(f"{GREEN}Come again soon :D")
             time.sleep(0.25)
             exit_flag = True
 
@@ -66,7 +71,7 @@ def number_features():
         clear_screen()
         global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER
         try:
-            number = int(input(f"{YELLOW}Please enter a whole number that can be checked over: {CYAN}"))
+            number = int(input(f"{GREEN}Please enter a whole number that can be checked over: {CYAN}"))
             if number == int:
                 print(f"{YELLOW}The features of {number} are...")
         except ValueError:
@@ -228,6 +233,28 @@ def higher_lower():
         TOTAL_INVALID_GUESSES += 1
         time.sleep(0.5)
         print(f"Press Enter to return to menu{RESET}")
+    input()
+
+def number_wordle():
+    """Number Wordle Game"""
+    clear_screen()
+    print(f"{YELLOW}Welcome to Number Wordle!")
+    print("Guess the 5 number sequence to win")
+    print(f"{GREEN}Correct number in correct position")
+    print(f"{YELLOW}Correct number in wrong position")
+    print(f"{RED}Wrong number{RESET}")
+
+    secret = "".join(random.sample("0123456789", 4))
+    try:
+        count = 1
+        while count < 7:
+            guess = input(f"{GREEN}What do you think it is?: {CYAN}")
+            for idx in range(5):
+                if 
+    except ValueError:
+        print(f"The number we were looking for was {secret}")
+        print("Press Enter to return to main menu")
+
     input()
 
 def stats():
