@@ -3,3 +3,47 @@
 ✅FIXED✅Number features crashes when a float/string is entered -> add "please enter a whole number"✅FIXED✅
 Number plotter graph disappears if x-axis coordinate ≥ 13
 Number plotter crashes when coordinate inputted exceeds graph limit (x-axis -> 38, y-axis -> 12)
+
+def number_wordle():
+    """Number Wordle Game"""
+    clear_screen()
+    print(f"{YELLOW}Welcome to Number Wordle!")
+    print("Guess the secret 4 number code in 5 attempts to win")
+    print(f"{GREEN}Correct number in correct position: 🟩")
+    print(f"{YELLOW}Correct number in wrong position: 🟨")
+    print(f"{RED}Wrong number: 🟥{RESET}")
+
+    secret = "".join(random.sample("0123456789", 4))
+    attempts = 5
+    for i in range(attempts):
+        guess = input(f"{GREEN}Attempt {i+1}: {CYAN}").strip()
+
+        #Validation of 4 digits, all numbers, and uniques
+        if len(guess) != 4 or not guess.isdigit():
+            print(f"{RED}Please enter exactly 4 digits")
+            continue
+        if len(set(guess)) != 4:
+            print(f"{RED}Your guess has duplicates! The secret code does NOT")
+        
+        if guess == secret:
+            print(f"{GREEN}BAZINGA! You are correct! You guessed it in {i}/5")
+            print(f"{YELLOW}Press Enter to return to main menu")
+            break
+        
+        #Placeholder
+        result = []
+        for idx in range(4):
+            if guess[idx] == secret[idx]:
+                result.append("🟩")
+            elif guess[idx] in secret:
+                result.append("🟨")
+            else:
+                result.append("🟥")
+
+        print(f"{YELLOW}Feedback: " + "".join(result))
+
+    print(f"\n{YELLOW}Oh No! You ran out attempts! :( The secret code was {RED}{secret}{RESET}")
+    print(f"{YELLOW}Press enter to return to main menu")
+
+
+    input()
