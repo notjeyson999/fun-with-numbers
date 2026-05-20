@@ -33,6 +33,7 @@ startup_shown = False
 loading_shown = False
 
 def startup_screen():
+    """Start-up screen"""
     global startup_shown
 
     clear_screen()
@@ -59,6 +60,66 @@ def startup_screen():
     time.sleep(0.5)
     clear_screen()
 
+def load_logins():
+    users = {}
+    try:
+        with open("user_access.txt", "r", encoding="utf8") as f:
+            for line in f:
+                username, password = line.strip().split(",")
+                users[username.strip()] = password.strip()
+    except FileNotFoundError:
+        pass  # No file yet, no users yet
+    return users
+
+
+def save_login(username, password):
+    with open("user_access.txt", "a", encoding="utf8") as f:
+        f.write(f"\n{username},{password}")
+
+
+logins = load_logins()
+logged_in = False
+
+
+def create_account():
+    print("\n=== Create New Account ===")
+
+    while True:
+        username = input("Choose a username: ").strip()
+
+        if username in logins:
+            print("That username already exists. Try another.")
+            continue
+
+        password = input("Choose a password: ").strip()
+        confirm = input("Confirm password: ").strip()
+
+        if password != confirm:
+            print("Passwords do not match. Try again.")
+            continue
+
+        save_login(username, password)
+        logins[username] = password
+        print("Account created successfully.\n")
+        return
+
+
+def login():
+    global logged_in
+    print("\n=== Login ===")
+
+    while True:
+        username = input("Username: ").strip()
+        password = input("Password: ").strip()
+
+        if username in logins and logins[username] == password:
+            print("Login successful\n")
+            logged_in = True
+            main()
+            return
+
+        print("Incorrect username or password.")
+
 
 def main():
     '''The main menu'''
@@ -68,6 +129,7 @@ def main():
 
     while not exit_flag:
         startup_screen()
+        load_logins()
         print(f"{GREEN}==============================")
         print(f"{GREEN}Welcome to Fun with Numbers!")
         print(f"{GREEN}Choose from the menu below:{RESET}")
@@ -287,6 +349,7 @@ def get_feedback(secret, guess):
     return " ".join(result)
 
 def number_wordle():
+    """Number Wordle game"""
     clear_screen()
     # Selects 4 unique digits from 0-9 and joins them as a string
     secret = "".join(random.sample("0123456789", 4))
@@ -378,4 +441,28 @@ def load_stats():
         TOTAL_INVALID_GUESSES = 0
         CORRECT_GUESSES = 0
 
-main()
+while True:
+    clear_screen()
+    print("\n1. Login")
+    print("2. Create Account")
+    print("3. Exit")
+
+    choice = input("Choose an option: ").strip()
+
+    if choice == "1":
+        clear_screen()
+        login()
+        if logged_in():
+            main()
+            break
+
+    elif choice == "2":
+        clear_screen()
+        create_account()
+
+    elif choice == "3":
+        print("Goodbye")
+        break
+
+    else:
+        print("Invalid option.")
