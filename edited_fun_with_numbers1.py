@@ -2,6 +2,7 @@
 #Devoloped by Jeyson Blain :P
 
 #Imports required libraries
+from fileinput import filename
 import os
 #Imports time function
 import time
@@ -9,6 +10,8 @@ import time
 import random
 #Imports
 import sys
+#Imports threading for loading animation and number processing
+import threading
 
 #States Colours for UI
 RESET   = '\033[0m'  #Sets to default#
@@ -82,42 +85,41 @@ LOGGED_IN = False
 
 
 def create_account():
-    print("\n=== Create New Account ===")
+    print(f"\n{GREEN}=== Create New Account ===")
 
     while True:
-        username = input("Choose a username: ").strip()
+        username = input(f"{MAGENTA}Choose a username: {CYAN}").strip()
 
         if username in logins:
-            print("That username already exists. Try another.")
+            print(f"{RED}That username already exists. Try another.")
             continue
 
-        password = input("Choose a password: ").strip()
-        confirm = input("Confirm password: ").strip()
+        password = input(f"{MAGENTA}Choose a password: {CYAN}").strip()
+        confirm = input(f"{MAGENTA}Confirm password: {CYAN}").strip()
 
         if password != confirm:
-            print("Passwords do not match. Try again.")
+            print(f"{RED}Passwords do not match. Try again.")
             continue
 
         save_login(username, password)
         logins[username] = password
-        print("Account created successfully.\n")
+        print(f"{GREEN}Account created successfully.\n")
         return
 
 def login():
     global LOGGED_IN
-    print("\n=== Login ===")
+    print(f"\n{GREEN}=== Login ===")
 
     while True:
-        username = input("Username: ").strip()
-        password = input("Password: ").strip()
+        username = input(f"{MAGENTA}Username: {CYAN}").strip()
+        password = input(f"{MAGENTA}Password: {CYAN}").strip()
 
         if username in logins and logins[username] == password:
-            print("Login successful\n")
+            print(f"{GREEN}Login successful\n")
             LOGGED_IN = True
-            main()
             return
 
-        print("Incorrect username or password.")
+        print(f"{RED}Incorrect username or password.")
 
 
 def main():
@@ -155,73 +157,104 @@ def main():
         elif choice == "X":
             save_stats()
             print(f"{YELLOW}Saving stats", end="")
-            for _ in range(3):
+            for _ in range(4):
                 time.sleep(0.5)
                 print(".", end="", flush=True)
                 time.sleep(0.5)
             print("\rStats Saved!")
-            print(f"{GREEN}Come again soon :D")
+            print(f"{YELLOW}Come again soon :D")
             time.sleep(0.25)
             exit_flag = True
 
+def loading_animation(stop_event):
+    animation = ["Loading.  ", "Loading.. ", "Loading..."]
+    idx = 0
+    while not stop_event.is_set():
+        print("\r" + animation[idx], end="")
+        idx = (idx + 1) % len(animation)
+        time.sleep(0.3)
+    print("\rLoading... Done!   ")
+    time.sleep(0.4)
+    print()
+
+
+def process_number(number, result):
+    # Positive / Negative / Zero
+    if number > 0:
+        result.append(f" {GREEN}Positive")
+    elif number < 0:
+        result.append(f" {RED}Negative")
+    else:
+        result.append(f" {GREY}Zero")
+
+    # Odd or Even
+    if number % 2 == 0:
+        result.append(f" {GREEN}Even")
+    else:
+        result.append(f" {RED}Odd")
+
+    # Factors
+    factors = []
+    for i in range(1, abs(number) + 1):
+        if number % i == 0:
+            factors.append(i)
+    result.append(f" {YELLOW}Factors are {RED}" + " ".join(map(str, factors)))
+
+    # Prime check
+    if number > 1 and len(factors) == 2:
+        result.append(f" {GREEN}Is a prime number")
+    else:
+        result.append(f" {RED}Is not a prime number")
+
+    # Binary / Hex / Octal
+    result.append(f" {YELLOW}Binary: {RED}{bin(number)[2:]}")
+    result.append(f" {YELLOW}Hexadecimal: {RED}{hex(number)[2:]}")
+    result.append(f" {YELLOW}Octal: {RED}{oct(number)[2:]}")
+
+
 def number_features():
     """Displays features of the number entered"""
+    global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER
+
     while True:
-        #"""Displays features of a number"""
         clear_screen()
-        global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER
+
         try:
             number = int(input(f"{MAGENTA}Please enter a whole number that can be checked over: {CYAN}"))
-            if number == int:
-                print(f"{YELLOW}The features of {RED}{number} are...")
         except ValueError:
-            print(F"{RED}Please input an integer")
-            print(F"{YELLOW}Press enter to return to main menu")
+            print(f"{RED}Please input an integer")
+            print(f"{YELLOW}Press enter to return to main menu")
+            input()
             break
 
-        #Check if the number is odd or even
-        if number > 0:
-            print(F" {GREEN}Positive")
-        elif number < 0:
-            print(F" {RED}Negative")
-        else:
-            print(F" {GREY}Zero")
+        # Storage for results
+        result = []
 
-        #Check if the number is odd or even
-        if number % 2 == 0:
-            print(F" {GREEN}Even")
-        else:
-            print(F"{RED} Odd")
+        # Start loading animation
+        stop_event = threading.Event()
+        loader = threading.Thread(target=loading_animation, args=(stop_event,))
+        loader.start()
 
-        #Lists all the factors of the number
-        print(F" {YELLOW}Factors are{RED}", end="")
-        factor_count = 0
-        for i in range(1, number + 1):
-            if number % i == 0:
-                print(" " + str(i), end="")
-                factor_count += 1
+        # Start number processing
+        worker = threading.Thread(target=process_number, args=(number, result))
+        worker.start()
 
-        #Check if number is a prime
-        if factor_count == 2:
-            print(F"\n {GREEN}Is a prime number")
-        else:
-            print(F"\n {RED}Is not a prime number")
-        
-        #Displays number as Binary, Hexadecimal and Octal
-        binary = f"{bin(number)}"
-        binary1 = binary[2:]
-        hexadecimal = f"{hex(number)}"
-        hexadecimal1 = hexadecimal[2:]
-        octal = f"{oct(number)}"
-        octal1 = octal[2:]
-        print(f" {YELLOW}Binary: {RED}{binary1}")
-        print(f" {YELLOW}Hexadecimal: {RED}{hexadecimal1}")
-        print(f" {YELLOW}Octal: {RED}{octal1}")
+        # Wait for processing to finish
+        worker.join()
 
-        #Update global variables
+        # Stop loading animation
+        stop_event.set()
+        loader.join()
+
+        # Display results
+        print(f"{YELLOW}The features of {RED}{number} {YELLOW}are:")
+        for line in result:
+            print(line)
+
+        # Update global stats
         if NUMBER_COUNT == 0:
-            SMALLEST_NUMBER == number
-            LARGEST_NUMBER == number
+            SMALLEST_NUMBER = number
+            LARGEST_NUMBER = number
         else:
             SMALLEST_NUMBER = min(number, SMALLEST_NUMBER)
             LARGEST_NUMBER = max(number, LARGEST_NUMBER)
@@ -229,13 +262,13 @@ def number_features():
         NUMBER_COUNT += 1
         NUMBER_TOTAL += number
 
-        #Asks user if they want to check another number
-        again = input(F"{MAGENTA}Do you want to check another number (y/n)?: {CYAN}").lower()
+        # Ask to repeat
+        again = input(f"{MAGENTA}Do you want to check another number (y/n)?: {CYAN}").lower()
         if again != "y":
-            print(F"{MAGENTA}Press Enter to return to main menu")
+            print(f"{MAGENTA}Press Enter to return to main menu")
+            input()
             break
     input()
-
 
 def draw_graph(table):
     """Draws the graph for the plotter routine"""
@@ -381,9 +414,24 @@ def number_wordle():
     else:
         print(f"{RED}Game Over!{YELLOW} The number was: {RED}{secret}{YELLOW}")
         print(f"{MAGENTA}Press Enter to return to main menu")
-        
 
     input()
+
+avg_numbers = NUMBER_TOTAL / NUMBER_COUNT if NUMBER_COUNT != 0 else 0
+win_rate = (CORRECT_GUESSES / TOTAL_GUESSES * 100) if TOTAL_GUESSES != 0 else 0
+
+def reset_statistics():
+    global NUMBER_COUNT, NUMBER_TOTAL, SMALLEST_NUMBER, LARGEST_NUMBER
+    global TOTAL_GUESSES, TOTAL_INVALID_GUESSES, CORRECT_GUESSES
+
+    NUMBER_COUNT = 0
+    NUMBER_TOTAL = 0
+    SMALLEST_NUMBER = 0
+    LARGEST_NUMBER = 0
+    TOTAL_GUESSES = 0
+    TOTAL_INVALID_GUESSES = 0
+    CORRECT_GUESSES = 0
+
 
 def stats():
     """Show statistics about numbers used in app"""
@@ -391,14 +439,33 @@ def stats():
     print(f"{GREEN}Here are your statistics of overall use:")
     print(f" {YELLOW}Numbers entered:  {RED}{NUMBER_COUNT}")
     print(f" {YELLOW}Total of numbers:  {RED}{NUMBER_TOTAL}")
-    print(f" {YELLOW}Average of Numbers:  {RED}{NUMBER_TOTAL / NUMBER_COUNT}")
+    print(f" {YELLOW}Average of Numbers:  {RED}{avg_numbers}")
     print(f" {YELLOW}Smallest number entered:  {RED}{SMALLEST_NUMBER}")
     print(f" {YELLOW}Largest Number entered:  {RED}{LARGEST_NUMBER}")
     print(f" {YELLOW}Total Guesses: {RED}{TOTAL_GUESSES}")
     print(f" {YELLOW}Total Invalid Guesses: {RED}{TOTAL_INVALID_GUESSES}")
     print(f" {YELLOW}Total Correct Guesses: {RED}{CORRECT_GUESSES}")
-    print(f" {YELLOW}Higher-Lower Win Rate: {RED}{CORRECT_GUESSES / TOTAL_GUESSES:.2f}%")
-    print(F"{MAGENTA}Press enter to return to main menu")
+    print(f" {YELLOW}Higher-Lower Win Rate: {RED}{win_rate:.2f}%")
+    delete = input(f" {RED}Would you like to reset your stats? (y/n): {CYAN}").lower()
+    if delete == 'y':
+        print(f"{RED}WARNING: This will delete all your stats and cannot be undone!{RESET}")
+        print(f"{YELLOW}Type {RED}DELETE{YELLOW} to confirm deletion{RESET}")
+        confirm_delete = input(f"{MAGENTA}Confirm: {CYAN}").upper()
+        if confirm_delete == "DELETE":
+            print(f"{YELLOW}Deleting stats", end="")
+            for _ in range(4):
+                time.sleep(0.5)
+                print(".", end="", flush=True)
+                time.sleep(0.5)
+            reset_statistics()
+            print("\rStats Deleted!")
+            print(f"{RED}NOTE: A restart is required for changes to take effect.")
+            time.sleep(0.5)
+            print(f"{YELLOW}Press Enter to return to main menu")
+        else:
+            print(f"{YELLOW}Deletion cancelled.")
+            time.sleep(1)
+            print(f"{YELLOW}Press Enter to return to main menu")
     input()
 
 def clear_screen():
@@ -441,27 +508,32 @@ def load_stats():
         CORRECT_GUESSES = 0
 
 while True:
+    #Controls the login and account creation process
     clear_screen()
-    print("\n1. Login")
-    print("2. Create Account")
-    print("3. Exit")
+    print(f"{GREEN}======================================")
+    print(f"{GREEN}Welcome to Fun with Numbers!")
+    print(f"{GREEN}Login or create an account to continue")
+    print(f"{GREEN}1. {YELLOW}Login")
+    print(f"{GREEN}2. {YELLOW}Create Account")
+    print(f"{GREEN}3. {YELLOW}Exit")
+    print(f"{GREEN}======================================")
 
-    choice = input("Choose an option: ").strip()
+    login_choice = input(f"{MAGENTA}Choose an option: {CYAN}").strip()
 
-    if choice == "1":
+    if login_choice == "1":
         clear_screen()
         login()
         if LOGGED_IN:
             main()
             break
 
-    elif choice == "2":
+    elif login_choice == "2":
         clear_screen()
         create_account()
 
-    elif choice == "3":
-        print("Goodbye")
+    elif login_choice == "3":
+        print(f"{YELLOW}Goodbye")
         break
 
     else:
-        print("Invalid option.")
+        print(f"{RED}Invalid option.")
