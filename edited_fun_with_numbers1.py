@@ -78,7 +78,7 @@ def save_login(username, password):
 
 
 logins = load_logins()
-logged_in = False
+LOGGED_IN = False
 
 
 def create_account():
@@ -103,9 +103,8 @@ def create_account():
         print("Account created successfully.\n")
         return
 
-
 def login():
-    global logged_in
+    global LOGGED_IN
     print("\n=== Login ===")
 
     while True:
@@ -114,7 +113,7 @@ def login():
 
         if username in logins and logins[username] == password:
             print("Login successful\n")
-            logged_in = True
+            LOGGED_IN = True
             main()
             return
 
@@ -452,7 +451,7 @@ while True:
     if choice == "1":
         clear_screen()
         login()
-        if logged_in():
+        if LOGGED_IN:
             main()
             break
 
